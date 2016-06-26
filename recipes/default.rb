@@ -62,11 +62,17 @@ directory '/etc/transmission-daemon' do
   mode '0755'
 end
 
+salt = SecureRandom.random_bytes(16)
+password_hash = '{SSHA}' + Base64.encode64(Digest::SHA1.digest(node['transmission']['rpc_password'] + salt) + salt).chomp!
+
 template "#{node['transmission']['config_dir']}/settings.json" do
   source 'settings.json.erb'
   owner 'root'
   group 'root'
   mode '0644'
+  variables(
+    password_hash: password_hash
+  )
   notifies :reload, 'service[transmission]', :immediately
 end
 
