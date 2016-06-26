@@ -34,7 +34,6 @@ service 'transmission' do
   service_name 'transmission-daemon'
   supports restart: true, reload: true
   action :nothing
-  subscribes :stop, "template[#{node['transmission']['config_dir']}/settings.json]", :before
 end
 
 template 'transmission-default' do
@@ -70,6 +69,7 @@ template "#{node['transmission']['config_dir']}/settings.json" do
   owner 'root'
   group 'root'
   mode '0644'
+  notifies :stop, 'service[transmission]', :before
   notifies :restart, 'service[transmission]', :delayed
 end
 
