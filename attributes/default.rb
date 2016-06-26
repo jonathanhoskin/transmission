@@ -42,7 +42,7 @@ default['transmission']['rpc_bind_address']            = '0.0.0.0'
 default['transmission']['rpc_username']                = 'transmission'
 default['transmission']['rpc_password']                = 'transmission'
 default['transmission']['rpc_port']                    = 9091
-default['transmission']['rpc_authentication_required'] = true
+default['transmission']['rpc_authentication_required'] = 'true'
 
 default['transmission']['rpc_whitelist_enabled']	= true
 default['transmission']['rpc_whitelist']	= '127.0.0.1'
