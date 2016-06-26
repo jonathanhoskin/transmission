@@ -24,10 +24,12 @@ when 'debian'
   default['transmission']['install_method'] = 'package'
   default['transmission']['user']           = 'debian-transmission'
   default['transmission']['group']          = 'debian-transmission'
+  default['transmission']['dir_group']      = 'debian-transmission'
 else
   default['transmission']['install_method'] = 'source'
   default['transmission']['user']           = 'transmission'
   default['transmission']['group']          = 'transmission'
+  default['transmission']['dir_group']      = 'transmission'
 end
 
 default['transmission']['url']              = 'http://download.transmissionbt.com/files'
@@ -56,4 +58,5 @@ default['transmission']['speed_limit_down_enabled'] = 'false'
 default['transmission']['speed_limit_up']           = 100 # KB/s
 default['transmission']['speed_limit_up_enabled']   = 'false'
 
-default['transmission']['umask'] = 18
+default['transmission']['umask']    = 18
+default['transmission']['dir_mode'] = '0755'

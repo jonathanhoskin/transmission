@@ -64,14 +64,14 @@ end
 
 directory node['transmission']['home'] do
   owner node['transmission']['user']
-  group node['transmission']['group']
-  mode '0755'
+  group node['transmission']['dir_group']
+  mode node['transmission']['dir_mode']
 end
 
 directory node['transmission']['config_dir'] do
   owner node['transmission']['user']
-  group node['transmission']['group']
-  mode '0755'
+  group node['transmission']['dir_group']
+  mode node['transmission']['dir_mode']
 end
 
 include_recipe 'transmission::default'
