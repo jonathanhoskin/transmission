@@ -77,7 +77,7 @@ end
 execute 'forcefully-stop-and-copy' do
   command '/etc/init.d/transmission-daemon stop || true'
   action :nothing
-  notifies :run 'execute[copy-settings-file-into-place]', :immediately
+  notifies :run, 'execute[copy-settings-file-into-place]', :immediately
 end
 
 template source_settings_file do
