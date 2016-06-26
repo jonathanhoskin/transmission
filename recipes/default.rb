@@ -30,6 +30,13 @@ end
 
 require 'transmission-simple'
 
+service 'transmission' do
+  service_name 'transmission-daemon'
+  supports restart: true, reload: true
+  action :nothing
+  subscribes :stop, "template[#{node['transmission']['config_dir']}/settings.json]", :before
+end
+
 template 'transmission-default' do
   case node['platform_family']
   when 'rhel', 'fedora'
@@ -41,6 +48,7 @@ template 'transmission-default' do
   owner 'root'
   group 'root'
   mode '0644'
+  notifies :restart, 'service[transmission]', :delayed
 end
 
 template '/etc/init.d/transmission-daemon' do
@@ -48,12 +56,7 @@ template '/etc/init.d/transmission-daemon' do
   owner 'root'
   group 'root'
   mode '0755'
-end
-
-service 'transmission' do
-  service_name 'transmission-daemon'
-  supports restart: true, reload: true
-  action [:enable, :start]
+  notifies :restart, 'service[transmission]', :delayed
 end
 
 directory '/etc/transmission-daemon' do
@@ -67,11 +70,17 @@ template "#{node['transmission']['config_dir']}/settings.json" do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :stop, 'service[transmission]', :before
-  notifies :start, 'service[transmission]', :delayed
+  notifies :restart, 'service[transmission]', :delayed
 end
 
 link '/etc/transmission-daemon/settings.json' do
   to "#{node['transmission']['config_dir']}/settings.json"
   not_if { File.symlink?("#{node['transmission']['config_dir']}/settings.json") }
+  notifies :restart, 'service[transmission]', :delayed
+end
+
+service 'transmission' do
+  service_name 'transmission-daemon'
+  supports restart: true, reload: true
+  action [:enable, :start]
 end
