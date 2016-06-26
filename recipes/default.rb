@@ -67,7 +67,8 @@ template "#{node['transmission']['config_dir']}/settings.json" do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :reload, 'service[transmission]', :immediately
+  notifies :stop, 'service[transmission]', :before
+  notifies :start, 'service[transmission]', :delayed
 end
 
 link '/etc/transmission-daemon/settings.json' do
