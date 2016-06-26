@@ -64,12 +64,17 @@ directory '/etc/transmission-daemon' do
   mode '0755'
 end
 
+execute 'forcefully-stop-transmission-daemon' do
+  command '/etc/init.d/transmission-daemon stop || true'
+  action :nothing
+end
+
 template "#{node['transmission']['config_dir']}/settings.json" do
   source 'settings.json.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :stop, 'service[transmission]', :before
+  notifies :run, 'execute[forcefully-stop-transmission-daemon]', :before
   notifies :restart, 'service[transmission]', :delayed
 end
 
