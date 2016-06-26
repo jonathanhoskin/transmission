@@ -9,7 +9,7 @@
 ### END INIT INFO
 
 NAME=transmission-daemon
-DAEMON=/usr/bin/$NAME
+DAEMON=$(which $NAME)
 USER=<%= node['transmission']['user'] %>
 # FIXME: no pidfile support; forks, so --make-pidfile doesn't work either
 #PIDFILE=/var/run/$NAME.pid
