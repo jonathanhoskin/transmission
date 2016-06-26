@@ -52,7 +52,7 @@
     "speed-limit-down-enabled": <%= node['transmission']['speed_limit_down_enabled'] %>,
     "speed-limit-up": <%= node['transmission']['speed_limit_up'] %>,
     "speed-limit-up-enabled": <%= node['transmission']['speed_limit_up_enabled'] %>,
-    "umask": 18,
+    "umask": <%= node['transmission']['umask'] %>,
     "upload-limit": 100,
     "upload-limit-enabled": 0,
     "upload-slots-per-torrent": 14,
