@@ -64,18 +64,28 @@ directory '/etc/transmission-daemon' do
   mode '0755'
 end
 
-execute 'forcefully-stop-transmission-daemon' do
-  command '/etc/init.d/transmission-daemon stop || true'
+source_settings_file = ::File.join(node['transmission']['config_dir'],'_settings.json')
+dest_settings_file   = ::File.join(node['transmission']['config_dir'],'settings.json')
+
+execute 'copy-settings-file-into-place' do
+  command "cp #{source_settings_file} #{dest_settings_file}"
+  not_if "diff #{source_settings_file} #{dest_settings_file}"
   action :nothing
+  notifies :restart, 'service[transmission]', :delayed
 end
 
-template "#{node['transmission']['config_dir']}/settings.json" do
+execute 'forcefully-stop-and-copy' do
+  command '/etc/init.d/transmission-daemon stop || true'
+  action :nothing
+  notifies :run 'execute[copy-settings-file-into-place]', :immediately
+end
+
+template source_settings_file do
   source 'settings.json.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :run, 'execute[forcefully-stop-transmission-daemon]', :before
-  notifies :restart, 'service[transmission]', :delayed
+  notifies :run, 'execute[forcefully-stop-and-copy]', :immediately
 end
 
 link '/etc/transmission-daemon/settings.json' do
