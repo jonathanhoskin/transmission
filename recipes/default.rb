@@ -24,6 +24,7 @@ include_recipe "transmission::#{node['transmission']['install_method']}"
   chef_gem pkg do
     action :install
     compile_time true if Chef::Resource::ChefGem.method_defined?(:compile_time)
+    not_if "/opt/chef/embedded/bin/gem list | grep -q #{pkg}"
   end
 end
 
