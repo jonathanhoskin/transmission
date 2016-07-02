@@ -36,16 +36,19 @@ default['transmission']['url']              = 'http://download.transmissionbt.co
 default['transmission']['version']          = '2.84'
 default['transmission']['checksum']         = 'a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb'
 
-default['transmission']['peer_port']        = 51_413
+default['transmission']['peer_port']              = 51_413
+default['transmission']['max_peers_global']       = 200
+default['transmission']['peer_limit_global']      = 240
+default['transmission']['peer_limit_per_torrent'] = 60
 
 default['transmission']['rpc_bind_address']            = '0.0.0.0'
 default['transmission']['rpc_username']                = 'transmission'
 default['transmission']['rpc_password']                = 'transmission'
 default['transmission']['rpc_port']                    = 9091
 default['transmission']['rpc_authentication_required'] = 'true'
+default['transmission']['rpc_whitelist_enabled']       = 'true'
+default['transmission']['rpc_whitelist']               = '127.0.0.1'
 
-default['transmission']['rpc_whitelist_enabled']	= true
-default['transmission']['rpc_whitelist']	= '127.0.0.1'
 default['transmission']['home']             = '/var/lib/transmission-daemon'
 default['transmission']['config_dir']       = '/var/lib/transmission-daemon/info'
 default['transmission']['download_dir']     = '/var/lib/transmission-daemon/downloads'
