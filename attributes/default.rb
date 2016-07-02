@@ -64,3 +64,6 @@ default['transmission']['speed_limit_up_enabled']   = 'false'
 
 default['transmission']['umask']    = 18
 default['transmission']['dir_mode'] = '0755'
+
+default['transmission']['ratio_limit_enabled'] = 'false'
+default['transmission']['ratio_limit']         = '2.0000'
