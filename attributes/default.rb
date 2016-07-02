@@ -67,3 +67,6 @@ default['transmission']['dir_mode'] = '0755'
 
 default['transmission']['ratio_limit_enabled'] = 'false'
 default['transmission']['ratio_limit']         = '2.0000'
+
+default['transmission']['idle_seeding_limit_enabled'] = 'false'
+default['transmission']['idle_seeding_limit']         = 30
