@@ -33,6 +33,7 @@ require 'transmission-simple'
 service 'transmission' do
   service_name 'transmission-daemon'
   supports restart: true, reload: true
+  priority 90
   action :nothing
 end
 
@@ -97,5 +98,6 @@ end
 service 'transmission' do
   service_name 'transmission-daemon'
   supports restart: true, reload: true
+  priority 90
   action [:enable, :start]
 end
