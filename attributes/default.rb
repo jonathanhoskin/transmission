@@ -57,6 +57,9 @@ default['transmission']['watch_dir']        = '/var/lib/transmission-daemon/watc
 default['transmission']['incomplete_dir_enabled'] = 'false'
 default['transmission']['watch_dir_enabled']      = 'false'
 
+default['transmission']['script_torrent_done_enabled']  = 'false'
+default['transmission']['script_torrent_done_filename'] = ''
+
 default['transmission']['speed_limit_down']         = 100 # KB/s
 default['transmission']['speed_limit_down_enabled'] = 'false'
 default['transmission']['speed_limit_up']           = 100 # KB/s
