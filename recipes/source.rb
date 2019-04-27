@@ -39,6 +39,8 @@ remote_file "#{Chef::Config[:file_cache_path]}/transmission-#{version}.tar.xz" d
   action :create_if_missing
 end
 
+check_command = "/usr/local/bin/transmission-daemon -V 2>&1 | awk '{print $2}'"
+
 bash 'compile_transmission' do
   cwd Chef::Config[:file_cache_path]
   code <<-EOH
@@ -47,7 +49,7 @@ bash 'compile_transmission' do
     ./configure -q && make -s
     make install
   EOH
-  creates '/usr/local/bin/transmission-daemon'
+  not_if { ::File.exist?('/usr/local/bin/transmission-daemon') && Mixlib::ShellOut.new(check_command).run_command.stdout.chomp =~ /^#{version}/ }
 end
 
 group node['transmission']['group'] do
