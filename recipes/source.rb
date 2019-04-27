@@ -54,13 +54,7 @@ group node['transmission']['group'] do
   action :create
 end
 
-user node['transmission']['user'] do
-  comment 'Transmission Daemon User'
-  gid node['transmission']['group']
-  system true
-  home node['transmission']['home']
-  action :create
-end
+include_recipe 'transmission::user'
 
 directory node['transmission']['home'] do
   owner node['transmission']['user']
