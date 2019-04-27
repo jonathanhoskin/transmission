@@ -18,6 +18,12 @@
 # limitations under the License.
 #
 
+service 'transmission-daemon' do
+  supports restart: true, reload: true
+  priority 90
+  action :nothing
+end
+
 include_recipe "transmission::#{node['transmission']['install_method']}"
 
 %w(bencode i18n transmission-simple activesupport).each do |pkg|
@@ -48,7 +54,7 @@ template 'transmission-default' do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart, 'service[transmission]', :delayed
+  notifies :restart, 'service[transmission-daemon]', :delayed
 end
 
 template '/etc/init.d/transmission-daemon' do
@@ -56,7 +62,7 @@ template '/etc/init.d/transmission-daemon' do
   owner 'root'
   group 'root'
   mode '0755'
-  notifies :restart, 'service[transmission]', :delayed
+  notifies :restart, 'service[transmission-daemon]', :delayed
 end
 
 directory '/etc/transmission-daemon' do
@@ -72,7 +78,7 @@ execute 'copy-settings-file-into-place' do
   command "cp #{source_settings_file} #{dest_settings_file}"
   not_if "diff #{source_settings_file} #{dest_settings_file}"
   action :nothing
-  notifies :restart, 'service[transmission]', :delayed
+  notifies :restart, 'service[transmission-daemon]', :delayed
 end
 
 execute 'forcefully-stop-and-copy' do
@@ -92,11 +98,10 @@ end
 link '/etc/transmission-daemon/settings.json' do
   to "#{node['transmission']['config_dir']}/settings.json"
   not_if { File.symlink?("#{node['transmission']['config_dir']}/settings.json") }
-  notifies :restart, 'service[transmission]', :delayed
+  notifies :restart, 'service[transmission-daemon]', :delayed
 end
 
-service 'transmission' do
-  service_name 'transmission-daemon'
+service 'transmission-daemon' do
   supports restart: true, reload: true
   priority 90
   action [:enable, :start]

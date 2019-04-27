@@ -41,15 +41,16 @@ end
 
 check_command = "/usr/local/bin/transmission-daemon -V 2>&1 | awk '{print $2}'"
 
-bash 'compile_transmission' do
+execute 'compile-transmission' do
   cwd Chef::Config[:file_cache_path]
-  code <<-EOH
+  command <<-EOH
     tar xvJf transmission-#{version}.tar.xz
     cd transmission-#{version}
     ./configure -q && make -s
     make install
   EOH
   not_if { ::File.exist?('/usr/local/bin/transmission-daemon') && Mixlib::ShellOut.new(check_command).run_command.stdout.chomp =~ /^#{version}/ }
+  notifies :restart, 'service[transmission-daemon]', :delayed
 end
 
 group node['transmission']['group'] do
